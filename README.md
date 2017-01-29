@@ -8,7 +8,7 @@ An Electron app is essentially made up of three components: Web pages, a main pr
 
 * **Web Pages**: One or more web pages that provide the UI for your app. You don't even really need web pages. And it's also possible to create hidden pages that run scripts in the background that can be used to process lengthy tasks.
 
-* **Main Process**: Consider this the startup script. It's normally in the project's root folder and named main.js. Among other things, it's used to initialize your app, perform application-wide functionality like creating and handling menus and creating and managing web pages. It is the only place where web pages can be created. You will see sample code on the Electron site that appears to show the creation of web pages even within other pages. But that is done by web pages calling on the main process to handle the creation of those pages. The main process also acts as a proxy between pages allowing them to communicate with each other. Because web pages are essentially the same thing as pages shown in different tabs in the Chrome browser, they cannot communicate with each other directly. There are various ways that they can communicate with each other indirectly and going through the main process is just one of them.
+* **Main Process**: Consider this the startup script. It is run by Node.js. It's normally in the project's root folder and named main.js. Among other things, it's used to initialize your app, perform application-wide functionality like creating and handling menus and creating and managing web pages. It is the only place where web pages can be created. You will see sample code on the Electron site that appears to show the creation of web pages even within other pages. But that is done by web pages calling on the main process to handle the creation of those pages. The main process also acts as a proxy between pages allowing them to communicate with each other. Because web pages are essentially the same thing as pages shown in different tabs in the Chrome browser, they cannot communicate with each other directly. There are various ways that they can communicate with each other indirectly and going through the main process is just one of them.
 
 * **Node.js**: When you start Electron, what is really happening is that Node is used to run the main process (main.js). Because Node also provides APIs that interact with the OS, Electron makes Node available to any part of your app as well. It is available to any code in main.js and any code in web pages.
 
@@ -37,7 +37,7 @@ Web applications can be designed in such a way that the entire application runs 
 * **Appearance**: Let's face it, single web pages when done properly can look great and better than an app made up of multiple pages.
 
 ##Debugging a Web Page
-The Electron app entitled _Electron API Demos is used to illustrate the debugging techniques discussed here. You can download the app at:
+The Electron app entitled _Electron API Demos_ is used to illustrate the debugging techniques discussed here. You can download the app at:
 
 [https://github.com/electron/electron-api-demos](https://github.com/electron/electron-api-demos)
 
