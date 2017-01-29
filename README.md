@@ -118,4 +118,47 @@ The jQuery $.get method is used to retrieve the script in background.js after a 
 Since this is for debugging purposes, in a production app, you probably don't want the delay. There are different techniques you can use to bypass the $.get method in a production app or just leave it in but have the delay time set to zero. Keep in mind though that Javascript does not provide any sort of conditional "compiling" where flags can be set to distinguish between debug and release versions of an app. It really is up to you to roll your own code in determining what to include or exclude from your release versions. One solution is to use the Gradle which is a popular build system for building Android app, although it is heavily geared for Java based apps. Still, Gradle isn't specific to Java or Android but can be used to build any kind of project. There is even one Gradle plugin for Javascript available in Github. Essentially, Gradle can be used to swap in or out code for various kinds of builds (debug, release, testing, etc).
 
 ##Debugging the Main Process
+Debugging Javascript in the main process (main.js) is a little trickier because this code is actually run in Node.js. You cannot use DevTools to debug code in main.js.
+
+Node does have its own built-in debugger although this is nothing even close to what DevTools provides. By default, the debugger is not enabled and can only be enabled when a Node app is launched, or in the case of Electron, when the Electron app is launched. When enabled, Node will setup a port on which it provides a debugging service to clients who attach themselves to the service. Node does even have its own built-in client that operates in a console mode where you can attach to the debugger, stop at breakpoints, request the values of variables, step to the next line and so on. But this is a pretty bad way of debugging code considering that most developers prefer fancy debugging tools like DevTools that have robust features to do proficient debugging. As of this writing there does not appear to be any way of using DevTools to attach to a Node app that is launched from Electron. Node does indeed have a starup option that can be used to enable the use of DevTools. The flag is --inspect. See:
+
+[https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27#.cmsuvfhkz](https://medium.com/@paul_irish/debugging-node-js-nightlies-with-chrome-devtools-7c4a1b95ae27#.cmsuvfhkz)
+
+Unfortunately, Electron does not support this flag although you should periodically check with Electron's site to see if they add it:
+
+[http://electron.atom.io/docs/tutorial/debugging-main-process/](http://electron.atom.io/docs/tutorial/debugging-main-process/)
+
+Electron does state that to debug the main process you need to use a third party debugging client and suggests either Visual Studio Code (VSCode) or Node Inspector. Node Inspector looks like a DevTools clone but it very much out-dated, was developed by some developer as open source but is virtually unusable as its UI can't even show icons or text properly rendering them unreadable.
+
+VSCode on the other hand is developed by Microsoft and although it bears the name "Visual Studio" is really no comparison or even related to its professional Visual Studio product that is fairly expensive. VSCode on the other hand is free and provides a robust debugging environment on par with DevTools. VSCode can be used to develop and debug apps on a range of platforms including Xamarin, C# and Web. Download VSCode at:
+
+[https://code.visualstudio.com/](https://code.visualstudio.com/)
+
+Follow these steps to hit a breakpoint in main.js. In VSCode:
+
+1. Press cmd-o to bring up the folder selectiong dialog and select the root folder of the project to debug.
+
+2. Open up main.js and set a breakpoint on the first line of code in the initialize function. You set a breakpoint by moving your cursor to the left of the line number and clicking. A red dot will appear for your breakpoint.
+
+3. In the far left column, click on the Debug icon. At the top of the debug pane is where you select the debug configuration that you want to debug with. To create a debug configuration, tap on the Settings icon (If you hover your mouse over it, it says **_Open launch.json_**. If no configuration already exists, you will be required to create one. You need to select a project type from one of the listed. Select Node.js. This will create a hidden .vscode folder in your project's root folder and a launch.json file in it containing one or more debugging configurations.
+4. Although you can have multiple debug configurations, we'll keep it simple and only have one, so replace the entire contents of launch.json with the following:
+5. 
+```javascript
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Main Process",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceRoot}",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+            "program": "${workspaceRoot}/main.js"
+        }
+    ]
+}
+```
+5. VSCode provides two ways of attaching to code. It can either attach to an already running instance of your app or it can launch your app. Attaching to an existing instance of an Electron app does not seem to work and would be useless for debugging main.js although it might have been useful for debugging renderer processes. For this reason, the **_request_** field is set to **_launch_**. The **_name_** field is a descriptive name you give to your configuration so that you can select it from the configuration dropdown list.
+
+6. To start debugging, just hit the green arrow next to the configuration list at the top of the debugging pane. Your Electron app will run and stop on the breakpoint you set. If you set the breakpoint on the first line in the initialize function, the breakpoint will be hit before any web pages are created.
 
