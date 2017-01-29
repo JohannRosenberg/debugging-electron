@@ -136,7 +136,7 @@ VSCode on the other hand is developed by Microsoft and although it bears the nam
 
 Follow these steps to hit a breakpoint in main.js. In VSCode:
 
-1. Press cmd-o to bring up the folder selectiong dialog and select the root folder of the project to debug.
+1. Press cmd-o to bring up the folder selection dialog and select the root folder of the project to debug.
 
 2. Open up main.js and set a breakpoint on the first line of code in the initialize function. You set a breakpoint by moving your cursor to the left of the line number and clicking. A red dot will appear for your breakpoint.
 
