@@ -1,3 +1,10 @@
+- [Debugging an Electron App](#)
+	- [Basic Structure of an Electron App](#)
+		- [The Renderer Process](#)
+		- [Use a Single Page App or Multiple Pages?](#)
+	- [Debugging a Web Page](#)
+	- [Debugging the Main Process](#)
+
 #Debugging an Electron App
 After reading the official documentation on Electron's website, I was left with a number of questions as to how Electron worked under the surface and how to effectively debug an app. This document describes some techniques on how to debug an Electron app on a Mac although the same concepts would apply for Windows and Linux.
 
