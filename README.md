@@ -1,6 +1,6 @@
-<a href="#debugwebpage">Debugging a Web Page</a>
+<a href="#debugwebpagewithdevtools">Debugging a Web Page With DevTools</a>
 
-<a href="#debugmain">Debugging the Main Process</a>
+<a href="#debugmainwithvscode">Debugging the Main Process With Visual Studio Code</a>
 #Debugging an Electron App
 After reading the official documentation on Electron's website, I was left with a number of questions as to how Electron worked under the surface and how to effectively debug an app. This document describes some techniques on how to debug an Electron app on a Mac although the same concepts would apply for Windows and Linux.
 
@@ -39,8 +39,8 @@ Web applications can be designed in such a way that the entire application runs 
 
 * **Appearance**: Let's face it, single web pages when done properly can look great and better than an app made up of multiple pages.
 
-<a name="debugwebpage">
-##Debugging a Web Page
+<a name="debugwebpagewithdevtools">
+##Debugging a Web Page With DevTools
 </a>
 The Electron app entitled _Electron API Demos_ is used to illustrate the debugging techniques discussed here. You can download the app at:
 
@@ -122,8 +122,8 @@ The jQuery $.get method is used to retrieve the script in background.js after a 
 
 Since this is for debugging purposes, in a production app, you probably don't want the delay. There are different techniques you can use to bypass the $.get method in a production app or just leave it in but have the delay time set to zero. Keep in mind though that Javascript does not provide any sort of conditional "compiling" where flags can be set to distinguish between debug and release versions of an app. It really is up to you to roll your own code in determining what to include or exclude from your release versions. One solution is to use the Gradle which is a popular build system for building Android apps, although it is heavily geared for Java based apps. Still, Gradle isn't specific to Java or Android but can be used to build any kind of project. There is even one Gradle plugin for Javascript available in Github. Essentially, Gradle can be used to swap in or out code for various kinds of builds (debug, release, testing, etc).
 
-<a name="debugmain">
-##Debugging the Main Process
+<a name="debugmainwithvscode">
+##Debugging the Main Process With Visual Studio Code
 </a>
 Debugging Javascript in the main process (main.js) is a little trickier because this code is actually run in Node.js. You cannot use DevTools to debug code in main.js.
 
