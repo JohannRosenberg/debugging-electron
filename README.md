@@ -1,4 +1,6 @@
-<a href="#debugmain">Debug Main Process</a>
+<a href="debugwebpage">Debugging a Web Page</a>
+
+<a href="#debugmain">Debugging the Main Process</a>
 #Debugging an Electron App
 After reading the official documentation on Electron's website, I was left with a number of questions as to how Electron worked under the surface and how to effectively debug an app. This document describes some techniques on how to debug an Electron app on a Mac although the same concepts would apply for Windows and Linux.
 
@@ -37,7 +39,9 @@ Web applications can be designed in such a way that the entire application runs 
 
 * **Appearance**: Let's face it, single web pages when done properly can look great and better than an app made up of multiple pages.
 
+<a name="debugwebpage">
 ##Debugging a Web Page
+</a>
 The Electron app entitled _Electron API Demos_ is used to illustrate the debugging techniques discussed here. You can download the app at:
 
 [https://github.com/electron/electron-api-demos](https://github.com/electron/electron-api-demos)
