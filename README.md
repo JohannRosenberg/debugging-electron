@@ -1,6 +1,8 @@
 #Debugging an Electron App
 After reading the official documentation on Electron's website, I was left with a number of questions as to how Electron worked under the surface and how to effectively debug an app. This document describes some techniques on how to debug an Electron app on a Mac although the same concepts would apply for Windows and Linux.
 
+Before diving into how to debug an Electron app, it helps to understand the general architecture of one from a different perspective than that presented on Electron's website. By better understanding this, you can make a better decision on how to architect your app which in turn will play a role in how you debug it.
+
 ## Basic Structure of an Electron App
 An Electron app is essentially made up of three components: Web pages, a main process and Node.js.
 
@@ -35,4 +37,85 @@ Web applications can be designed in such a way that the entire application runs 
 * **Appearance**: Let's face it, single web pages when done properly can look great and better than an app made up of multiple pages.
 
 ##Debugging a Web Page
+The Electron app entitled _Electron API Demos is used to illustrate the debugging techniques discussed here. You can download the app at:
+
+[https://github.com/electron/electron-api-demos](https://github.com/electron/electron-api-demos)
+
+When the app is running, you can press alt-cmd-i to bring up the developer tools (or DevTools for short), which is the same DevTools used in Chrome. You can then set breakpoints and inspect variables. Breakpoints however will only be hit **after** DevTools has already been loaded. If you set a breakpoint and then restart your app, they will not be hit because by default DevTools does not load when your app starts, although a way to do this is described below. If you don't want to restart your app, you can open up the DevTools console pane and type:
+
+```
+location.reload(true)
+```
+
+This will force the page to reload and stop at any breakpoints where they are encountered during execution. Most of the time this will probably suffice but there will be cases where you need a breakpoint to be hit without reloading the web page. If your app consists of multiple pages and one page (such as the main page) opens up another page and needs to pass data to it, you might end up losing that data if you just reload the page, depending on what sort of mechanism you use for passing data. But a more important issue is that by default, DevTools will not be opened up on the secondary page, so even if you have breakpoints set or even use a debugger statement, the code will not be suspended. As was already mentioned, breakpoints can only be hit **after** DevTools has loaded. And even then, DevTools needs a short amount of time to attach itself to the currently running DOM and javascript.
+
+One solution is to programmatically open DevTools when the page is created and delay executing your script for a fixed duration. Open the the file _process-crash.js_ and add the openDevTools method as follows:
+
+```javascript
+const BrowserWindow = require('electron').remote.BrowserWindow
+const dialog = require('electron').remote.dialog
+
+const path = require('path')
+
+const processCrashBtn = document.getElementById('process-crash')
+
+processCrashBtn.addEventListener('click', function (event) {
+  const crashWinPath = path.join('file://', __dirname, '../../sections/windows/process-crash.html')
+  let win = new BrowserWindow({ width: 400, height: 320 });
+  win.openDevTools();
+
+  win.webContents.on('crashed', function () {
+    const options = {
+      type: 'info',
+      title: 'Renderer Process Crashed',
+      message: 'This process has crashed.',
+      buttons: ['Reload', 'Close']
+    }
+    dialog.showMessageBox(options, function (index) {
+      if (index === 0) win.reload()
+      else win.close()
+    })
+  })
+
+  win.on('close', function () { win = null })
+  win.loadURL(crashWinPath)
+  win.show()
+})
+```
+This code is loaded in crash-hang.html which in turn is loaded in index.html. So effectively, this code is executed from the main web page (index.html). To execute this code, on the main web page, go to the item in the navigation pane labeled **_Handling window crashes and hangs_** and expand the item in the right pane labeled **_Relaunch window after the process crashes_** and then click on the **_View Demo_** button.
+
+The popup page containing process-crash.html is loaded and the DevTools is shown. The html content in process-crash.html including any javascript attached to it is part of what is referred to as the _renderer process__.
+
+In order to get DevTools to break on a breakpoint when process-crash.html is loaded, we need to make some modifications. Download jQuery and store it in the script folder. You can download jQuery at:
+
+[https://code.jquery.com/jquery-3.1.1.min.js](https://code.jquery.com/jquery-3.1.1.min.js)
+
+Create a javascript file in the script folder and name it background.js and add the following Javascript code to it:
+
+```javascript
+debugger;
+console.log("This is a breakpoint in my Electron app");
+```
+
+The ```debugger;``` statement will cause the debugger to stop on this line of code when it is encountered. Remember, it will only stop **after** DevTools has already launched and had some time to attach to the web page and its Javascript. In process-crash.html, add the following code to the end of the html:
+
+```javascript
+<script>
+    var $ = global.jQuery = require('../../script/jquery-3.1.1.min.js');
+
+    $(document).ready(function () {
+
+        setTimeout(function () {
+            $.getScript("../../script/background.js", function (data, textStatus, jqxhr) {
+            });
+        }, 500);
+    });
+
+</script>
+```
+The jQuery $.get method is used to retrieve the script in background.js after a delay of 500 ms. The delay is needed to let DevTools attach itself to the html content and its Javascript. You may need to play around with the time delay. If the delay is too short, DevTools will not have enough time to attach and the debugger statement will not be caught. You can start out with one second and just decrease the time by 100 ms increments until you find the amount of time needed for DevTools to attach.
+
+Since this is for debugging purposes, in a production app, you probably don't want the delay. There are different techniques you can use to bypass the $.get method in a production app or just leave it in but have the delay time set to zero. Keep in mind though that Javascript does not provide any sort of conditional "compiling" where flags can be set to distinguish between debug and release versions of an app. It really is up to you to roll your own code in determining what to include or exclude from your release versions. One solution is to use the Gradle which is a popular build system for building Android app, although it is heavily geared for Java based apps. Still, Gradle isn't specific to Java or Android but can be used to build any kind of project. There is even one Gradle plugin for Javascript available in Github. Essentially, Gradle can be used to swap in or out code for various kinds of builds (debug, release, testing, etc).
+
+##Debugging the Main Process
 
