@@ -1,10 +1,11 @@
-<a href="#debugwebpagewithdevtools">Debugging a Web Page With DevTools</a>
-
-<a href="#debugmainwithvscode">Debugging the Main Process With Visual Studio Code</a>
 #Debugging an Electron App
 After reading the official documentation on Electron's website, I was left with a number of questions as to how Electron worked under the surface and how to effectively debug an app. This document describes some techniques on how to debug an Electron app on a Mac although the same concepts would apply for Windows and Linux.
 
 Before diving into how to debug an Electron app, it helps to understand the general architecture of one from a different perspective than that presented on Electron's website. By better understanding this, you can make a better decision on how to architect your app which in turn will play a role in how you debug it.
+
+<a href="#debugwebpagewithdevtools">Debugging a Web Page With DevTools</a>
+
+<a href="#debugmainwithvscode">Debugging the Main Process With Visual Studio Code</a>
 
 ## Basic Structure of an Electron App
 An Electron app is essentially made up of three components: Web pages, a main process and Node.js.
