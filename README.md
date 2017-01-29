@@ -1,10 +1,4 @@
-- [Debugging an Electron App](#)
-	- [Basic Structure of an Electron App](#)
-		- [The Renderer Process](#)
-		- [Use a Single Page App or Multiple Pages?](#)
-	- [Debugging a Web Page](#)
-	- [Debugging the Main Process](#)
-
+<a href="#debugmain">Debug Main Process</a>
 #Debugging an Electron App
 After reading the official documentation on Electron's website, I was left with a number of questions as to how Electron worked under the surface and how to effectively debug an app. This document describes some techniques on how to debug an Electron app on a Mac although the same concepts would apply for Windows and Linux.
 
@@ -124,7 +118,9 @@ The jQuery $.get method is used to retrieve the script in background.js after a 
 
 Since this is for debugging purposes, in a production app, you probably don't want the delay. There are different techniques you can use to bypass the $.get method in a production app or just leave it in but have the delay time set to zero. Keep in mind though that Javascript does not provide any sort of conditional "compiling" where flags can be set to distinguish between debug and release versions of an app. It really is up to you to roll your own code in determining what to include or exclude from your release versions. One solution is to use the Gradle which is a popular build system for building Android apps, although it is heavily geared for Java based apps. Still, Gradle isn't specific to Java or Android but can be used to build any kind of project. There is even one Gradle plugin for Javascript available in Github. Essentially, Gradle can be used to swap in or out code for various kinds of builds (debug, release, testing, etc).
 
+<a name="debugmain">
 ##Debugging the Main Process
+</a>
 Debugging Javascript in the main process (main.js) is a little trickier because this code is actually run in Node.js. You cannot use DevTools to debug code in main.js.
 
 Node does have its own built-in debugger although this is nothing even close to what DevTools provides. By default, the debugger is not enabled and can only be enabled when a Node app is launched, or in the case of Electron, when the Electron app is launched. When enabled, Node will setup a port on which it provides a debugging service to clients who attach themselves to the service. Node does even have its own built-in client that operates in a console mode where you can attach to the debugger, stop at breakpoints, request the values of variables, step to the next line and so on. But this is a pretty bad way of debugging code considering that most developers prefer fancy debugging tools like DevTools that have robust features to do proficient debugging. As of this writing there does not appear to be any way of using DevTools to attach to a Node app that is launched from Electron. Node does indeed have a starup option that can be used to enable the use of DevTools. The flag is --inspect. See:
