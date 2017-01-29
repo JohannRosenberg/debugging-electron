@@ -1,4 +1,4 @@
-<a href="debugwebpage">Debugging a Web Page</a>
+<a href="#debugwebpage">Debugging a Web Page</a>
 
 <a href="#debugmain">Debugging the Main Process</a>
 #Debugging an Electron App
