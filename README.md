@@ -141,9 +141,7 @@ Follow these steps to hit a breakpoint in main.js. In VSCode:
 2. Open up main.js and set a breakpoint on the first line of code in the initialize function. You set a breakpoint by moving your cursor to the left of the line number and clicking. A red dot will appear for your breakpoint.
 
 3. In the far left column, click on the Debug icon. At the top of the debug pane is where you select the debug configuration that you want to debug with. To create a debug configuration, tap on the Settings icon (If you hover your mouse over it, it says **_Open launch.json_**. If no configuration already exists, you will be required to create one. You need to select a project type from one of the listed. Select Node.js. This will create a hidden .vscode folder in your project's root folder and a launch.json file in it containing one or more debugging configurations.
-4. Although you can have multiple debug configurations, we'll keep it simple and only have one, so replace the entire contents of launch.json with the following:
-
-```javascript
+4. Although you can have multiple debug configurations, we'll keep it simple and only have one, so replace the entire contents of launch.json with the following: ```javascript
 {
     "version": "0.2.0",
     "configurations": [
