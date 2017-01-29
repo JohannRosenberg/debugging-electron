@@ -142,22 +142,23 @@ Follow these steps to hit a breakpoint in main.js. In VSCode:
 
 3. In the far left column, click on the Debug icon. At the top of the debug pane is where you select the debug configuration that you want to debug with. To create a debug configuration, tap on the Settings icon (If you hover your mouse over it, it says **_Open launch.json_**. If no configuration already exists, you will be required to create one. You need to select a project type from one of the listed. Select Node.js. This will create a hidden .vscode folder in your project's root folder and a launch.json file in it containing one or more debugging configurations.
 4. Although you can have multiple debug configurations, we'll keep it simple and only have one, so replace the entire contents of launch.json with the following:
-5. 
-```javascript
-...{
-...    "version": "0.2.0",
-...    "configurations": [
-...        {
-...            "name": "Debug Main Process",
-...            "type": "node",
-...            "request": "launch",
-...            "cwd": "${workspaceRoot}",
-...            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
-...            "program": "${workspaceRoot}/main.js"
-...        }
-...    ]
-...}
-```
+
+     ```
+     {
+         "version": "0.2.0",
+         "configurations": [
+             {
+                 "name": "Debug Main Process",
+                 "type": "node",
+                 "request": "launch",
+                 "cwd": "${workspaceRoot}",
+                 "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+                 "program": "${workspaceRoot}/main.js"
+             }
+         ]
+     }
+     ```
+
 7. VSCode provides two ways of attaching to code. It can either attach to an already running instance of your app or it can launch your app. Attaching to an existing instance of an Electron app does not seem to work and would be useless for debugging main.js although it might have been useful for debugging renderer processes. For this reason, the **_request_** field is set to **_launch_**. The **_name_** field is a descriptive name you give to your configuration so that you can select it from the configuration dropdown list.
 8. To start debugging, just hit the green arrow next to the configuration list at the top of the debugging pane. Your Electron app will run and stop on the breakpoint you set. If you set the breakpoint on the first line in the initialize function, the breakpoint will be hit before any web pages are created.
 
