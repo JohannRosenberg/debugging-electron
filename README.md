@@ -84,7 +84,7 @@ processCrashBtn.addEventListener('click', function (event) {
 ```
 This code is loaded in crash-hang.html which in turn is loaded in index.html. So effectively, this code is executed from the main web page (index.html). To execute this code, on the main web page, go to the item in the navigation pane labeled **_Handling window crashes and hangs_** and expand the item in the right pane labeled **_Relaunch window after the process crashes_** and then click on the **_View Demo_** button.
 
-The popup page containing process-crash.html is loaded and the DevTools is shown. The html content in process-crash.html including any javascript attached to it is part of what is referred to as the _renderer process__.
+The popup page containing process-crash.html is loaded and the DevTools is shown. The html content in process-crash.html including any javascript attached to it is part of what is referred to as the _renderer process_.
 
 In order to get DevTools to break on a breakpoint when process-crash.html is loaded, we need to make some modifications. Download jQuery and store it in the script folder. You can download jQuery at:
 
